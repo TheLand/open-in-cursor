@@ -78,16 +78,6 @@ Requirements: [macOS 13+](https://www.apple.com/macos/) · [Cursor](https://curs
 1. Open the downloaded `.dmg`
 2. Drag **Open in Cursor** to **Applications**
 
-### First launch
-
-If macOS blocks the app (unsigned):
-
-```bash
-xattr -cr "/Applications/Open in Cursor.app"
-```
-
-Or: right-click the app → **Open** → **Open**.
-
 ### Finder permission
 
 On first use:
