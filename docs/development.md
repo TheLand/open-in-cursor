@@ -11,7 +11,7 @@ Guide for contributors to Open in Cursor.
 ## Setup
 
 ```bash
-git clone https://github.com/mantomar/open-in-cursor.git
+git clone https://github.com/TheLand/open-in-cursor.git
 cd open-in-cursor
 chmod +x build.sh package.sh install.sh scripts/*.sh .githooks/*
 ```

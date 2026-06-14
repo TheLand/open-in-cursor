@@ -11,8 +11,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/mantomar/open-in-cursor/releases/latest/download/OpenInCursor.dmg">
-    <img src="https://img.shields.io/github/v/release/mantomar/open-in-cursor?label=Download&sort=semver&color=007AFF" alt="Download latest" />
+  <a href="https://github.com/TheLand/open-in-cursor/releases/latest/download/OpenInCursor.dmg">
+    <img src="https://img.shields.io/github/v/release/TheLand/open-in-cursor?label=Download&sort=semver&color=007AFF" alt="Download latest" />
   </a>
   <img src="https://img.shields.io/badge/macOS-13%2B-000000?logo=apple&logoColor=white" alt="macOS 13+" />
   <img src="https://img.shields.io/badge/Swift-native-F05138?logo=swift&logoColor=white" alt="Swift" />
@@ -67,9 +67,9 @@ graph TB
 
 ### Download
 
-**[Download latest (OpenInCursor.dmg)](https://github.com/mantomar/open-in-cursor/releases/latest/download/OpenInCursor.dmg)**
+**[Download latest (OpenInCursor.dmg)](https://github.com/TheLand/open-in-cursor/releases/latest/download/OpenInCursor.dmg)**
 
-All releases: [github.com/mantomar/open-in-cursor/releases](https://github.com/mantomar/open-in-cursor/releases/latest)
+All releases: [github.com/TheLand/open-in-cursor/releases](https://github.com/TheLand/open-in-cursor/releases/latest)
 
 Requirements: [macOS 13+](https://www.apple.com/macos/) · [Cursor](https://cursor.com) · `cursor` CLI in PATH
 
@@ -125,11 +125,11 @@ Install the `cursor` CLI from Cursor if missing: `Cmd+Shift+P` → **Shell Comma
 
 ### Updates
 
-Download the [latest release](https://github.com/mantomar/open-in-cursor/releases/latest/download/OpenInCursor.dmg) and replace the app in **Applications**.
+Download the [latest release](https://github.com/TheLand/open-in-cursor/releases/latest/download/OpenInCursor.dmg) and replace the app in **Applications**.
 
 ### Contact
 
-Open a [GitHub issue](https://github.com/mantomar/open-in-cursor/issues) for bugs or feature requests.
+Open a [GitHub issue](https://github.com/TheLand/open-in-cursor/issues) for bugs or feature requests.
 
 ## Acknowledgments
 
