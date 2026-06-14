@@ -133,10 +133,6 @@ Download the [latest release](https://github.com/mantomar/open-in-cursor/release
 
 Open a [GitHub issue](https://github.com/mantomar/open-in-cursor/issues) for bugs or feature requests.
 
-## License
-
-Internal team use.
-
 ## Acknowledgments
 
 Inspired by [OpenInCode](https://github.com/sozercan/openincode) — a macOS Finder toolbar app to open the current folder in Visual Studio Code.

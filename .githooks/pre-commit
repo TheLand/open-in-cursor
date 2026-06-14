@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+./scripts/build-dmg-if-needed.sh
+
+VERSION="$(tr -d '[:space:]' < VERSION)"
+DMG="dist/OpenInCursor-${VERSION}.dmg"
+
+echo ""
+echo "Reminder: upload dist/OpenInCursor.dmg to GitHub Releases after tagging."
+echo ""

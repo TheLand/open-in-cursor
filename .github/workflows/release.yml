@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set version from tag
+        run: echo "${GITHUB_REF_NAME#v}" > VERSION
+
+      - name: Build and test
+        run: |
+          chmod +x scripts/test.sh build.sh package.sh
+          ./scripts/test.sh
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Open in Cursor ${{ github.ref_name }}
+          files: |
+            dist/OpenInCursor.dmg
+            dist/OpenInCursor-*.dmg
+          generate_release_notes: true
