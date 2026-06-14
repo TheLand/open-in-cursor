@@ -17,8 +17,6 @@
   <img src="https://img.shields.io/badge/macOS-13%2B-000000?logo=apple&logoColor=white" alt="macOS 13+" />
   <img src="https://img.shields.io/badge/Swift-native-F05138?logo=swift&logoColor=white" alt="Swift" />
   <img src="https://img.shields.io/badge/Cursor-required-000000?logo=cursor&logoColor=white" alt="Cursor" />
-  <img src="https://github.com/mantomar/open-in-cursor/actions/workflows/ci.yml/badge.svg" alt="GitHub Actions CI" />
-  <img src="https://github.com/mantomar/open-in-cursor/actions/workflows/release.yml/badge.svg" alt="GitHub Actions Release" />
 </p>
 
 <p align="center">
