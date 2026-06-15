@@ -60,7 +60,7 @@ assets/               AppIcon.icns, icon-preview.png
 
 Every push of a semver tag (`v*`) triggers [`.github/workflows/release.yml`](../.github/workflows/release.yml), which runs tests, builds the `.dmg`, and publishes a GitHub Release automatically.
 
-Update [CHANGELOG.md](../CHANGELOG.md) before tagging (Keep a Changelog format).
+Update [CHANGELOG.md](../CHANGELOG.md) before tagging (Keep a Changelog format). The agent skill [`.cursor/skills/update-changelog-before-push`](../.cursor/skills/update-changelog-before-push/SKILL.md) enforces this before any `git push`.
 
 ```bash
 echo "1.0.1" > VERSION
