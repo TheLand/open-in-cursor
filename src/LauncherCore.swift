@@ -25,13 +25,22 @@ tell application "Finder"
 end tell
 """
 
+	static let cursorBundleIdentifier = "com.todesktop.230313mzl4w4u92"
+
 	static let cursorCandidatePaths = [
 		"/usr/local/bin/cursor",
 		"/opt/homebrew/bin/cursor",
 	]
 
+	static let cursorBundledCLIRelativePath = "Contents/Resources/app/bin/cursor"
+
+	static let cursorAppBundlePaths = [
+		"/Applications/Cursor.app",
+		"\(NSHomeDirectory())/Applications/Cursor.app",
+	]
+
 	static let cursorNotFoundMessage =
-		"Cursor CLI not found. Open Cursor, press Cmd+Shift+P, and select \"Shell Command: Install 'cursor' command in PATH\"."
+		"Cursor not found. Install Cursor from cursor.com, then try again."
 
 	static let noFinderWindowMessage =
 		"No Finder window is open. Open a folder in Finder and try again."
@@ -68,9 +77,21 @@ end tell
 		return descriptor.coerce(toDescriptorType: unicodeText)?.stringValue
 	}
 
+	static func bundledCursorCLIPaths(
+		appBundlePaths: [String] = cursorAppBundlePaths,
+		bundledCLIRelativePath: String = cursorBundledCLIRelativePath
+	) -> [String] {
+		appBundlePaths.map { "\($0)/\(bundledCLIRelativePath)" }
+	}
+
 	static func resolveCursorCLI(
 		isExecutable: (String) -> Bool = { FileManager.default.isExecutableFile(atPath: $0) },
-		pathEnvironment: String = ProcessInfo.processInfo.environment["PATH"] ?? ""
+		pathEnvironment: String = ProcessInfo.processInfo.environment["PATH"] ?? "",
+		appBundleLocator: () -> String? = {
+			NSWorkspace.shared
+				.urlForApplication(withBundleIdentifier: cursorBundleIdentifier)?
+				.path
+		}
 	) -> String? {
 		for path in cursorCandidatePaths where isExecutable(path) {
 			return path
@@ -80,6 +101,17 @@ end tell
 			let candidate = "\(entry)/cursor"
 			if isExecutable(candidate) {
 				return candidate
+			}
+		}
+
+		for path in bundledCursorCLIPaths() where isExecutable(path) {
+			return path
+		}
+
+		if let appBundlePath = appBundleLocator() {
+			let bundledCLI = "\(appBundlePath)/\(cursorBundledCLIRelativePath)"
+			if isExecutable(bundledCLI) {
+				return bundledCLI
 			}
 		}
 

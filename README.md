@@ -35,7 +35,7 @@ The app reads the front Finder window path and invokes the `cursor` CLI:
 
 - **Spotlight**: launch with `Cmd+Space` → "Open in Cursor"
 - **Finder automation**: macOS asks for permission to control Finder (one-time)
-- **Cursor CLI**: opens the folder with `cursor -n <path>`
+- **Cursor CLI**: opens the folder with `cursor -n <path>` (uses the CLI bundled inside Cursor.app when needed)
 
 ```mermaid
 graph TB
@@ -71,7 +71,7 @@ graph TB
 
 All releases: [github.com/TheLand/open-in-cursor/releases](https://github.com/TheLand/open-in-cursor/releases/latest)
 
-Requirements: [macOS 13+](https://www.apple.com/macos/) · [Cursor](https://cursor.com) · `cursor` CLI in PATH
+Requirements: [macOS 13+](https://www.apple.com/macos/) · [Cursor](https://cursor.com) installed
 
 ### Installation
 
@@ -94,14 +94,14 @@ On first use:
 2. `Cmd+Space` → type **Open in Cursor** → Enter
 3. Cursor opens in a new window on that folder
 
-Install the `cursor` CLI from Cursor if missing: `Cmd+Shift+P` → **Shell Command: Install 'cursor' command in PATH**.
+No extra setup is required if Cursor is installed in **Applications**. The optional `cursor` shell command is only needed for terminal use.
 
 ## Troubleshooting
 
 | Problem | Solution |
 | --- | --- |
 | "No Finder window is open" | Open at least one Finder window on a folder |
-| "Cursor CLI not found" | Install the `cursor` command from Cursor (see Quickstart) |
+| "Cursor not found" | Install [Cursor](https://cursor.com) to Applications |
 | Finder permission denied | **Request Permission** → Allow in the system dialog → **Open Settings** |
 | Open in Cursor missing in Automation | Click **Request Permission** first, then reopen Settings |
 | Stale permissions (`env`, `bash`) | Disable those entries in Automation, or run `tccutil reset AppleEvents com.openincursor.app` and relaunch |

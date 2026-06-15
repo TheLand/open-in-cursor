@@ -55,11 +55,30 @@ final class LauncherCoreTests: XCTestCase {
 		XCTAssertEqual(resolved, "/custom/bin/cursor")
 	}
 
+	func testResolveCursorCLIFallsBackToBundledCLI() {
+		let resolved = LauncherCore.resolveCursorCLI(
+			isExecutable: { $0 == "/Applications/Cursor.app/Contents/Resources/app/bin/cursor" },
+			pathEnvironment: "/usr/bin",
+			appBundleLocator: { nil }
+		)
+		XCTAssertEqual(resolved, "/Applications/Cursor.app/Contents/Resources/app/bin/cursor")
+	}
+
+	func testResolveCursorCLIFallsBackToLocatedAppBundle() {
+		let resolved = LauncherCore.resolveCursorCLI(
+			isExecutable: { $0 == "/Users/test/Apps/Cursor.app/Contents/Resources/app/bin/cursor" },
+			pathEnvironment: "/usr/bin",
+			appBundleLocator: { "/Users/test/Apps/Cursor.app" }
+		)
+		XCTAssertEqual(resolved, "/Users/test/Apps/Cursor.app/Contents/Resources/app/bin/cursor")
+	}
+
 	func testResolveCursorCLIReturnsNilWhenMissing() {
 		XCTAssertNil(
 			LauncherCore.resolveCursorCLI(
 				isExecutable: { _ in false },
-				pathEnvironment: "/usr/bin"
+				pathEnvironment: "/usr/bin",
+				appBundleLocator: { nil }
 			)
 		)
 	}
