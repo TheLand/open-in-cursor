@@ -60,6 +60,8 @@ assets/               AppIcon.icns, icon-preview.png
 
 Every push of a semver tag (`v*`) triggers [`.github/workflows/release.yml`](../.github/workflows/release.yml), which runs tests, builds the `.dmg`, and publishes a GitHub Release automatically.
 
+Update [CHANGELOG.md](../CHANGELOG.md) before tagging (Keep a Changelog format).
+
 ```bash
 echo "1.0.1" > VERSION
 git commit -am "chore: bump version to 1.0.1"

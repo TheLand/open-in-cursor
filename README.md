@@ -111,6 +111,7 @@ No extra setup is required if Cursor is installed in **Applications**. The optio
 ## Documentation
 
 - **[Development](docs/development.md)** — build, test, Git hooks, releases, contributing
+- **[Changelog](CHANGELOG.md)** — release notes and version history
 - **README** (this file) — installation and troubleshooting
 
 ### Updates
