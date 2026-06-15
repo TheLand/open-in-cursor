@@ -51,6 +51,32 @@ end tell
 	static let cursorLaunchFailedMessage =
 		"Unable to launch Cursor. Make sure Cursor is installed and the cursor command is available."
 
+	static let quarantineAttributeName = "com.apple.quarantine"
+
+	static let privacySecuritySettingsURLs = [
+		"x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension",
+		"x-apple.systempreferences:com.apple.preference.security",
+	]
+
+	static let gatekeeperGuideTitle = "First launch — macOS security check"
+
+	static let gatekeeperGuideMessage = """
+	macOS may block Open in Cursor because the app is not notarized by Apple. This is expected for open-source releases and does not mean the app contains malware.
+
+	If macOS showed “cannot verify malware” before this dialog:
+	1. Quit this app
+	2. In Applications, right-click Open in Cursor → Open → Open
+	3. Launch again from Spotlight
+
+	If it is still blocked:
+	1. Click Open Privacy & Security
+	2. Scroll to Security
+	3. Click Open Anyway for Open in Cursor
+
+	Terminal alternative:
+	xattr -cr "/Applications/Open in Cursor.app"
+	"""
+
 	static func normalizeFolderPath(_ raw: String) -> String? {
 		let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
 		return trimmed.isEmpty ? nil : trimmed
@@ -124,6 +150,32 @@ end tell
 
 	static func launchExecutableURL(cursorBin: String) -> URL {
 		URL(fileURLWithPath: cursorBin)
+	}
+
+	static func hasQuarantineAttribute(
+		at path: String,
+		xattrLister: (String) -> String? = listExtendedAttributes
+	) -> Bool {
+		guard let output = xattrLister(path) else { return false }
+		return output.contains(quarantineAttributeName)
+	}
+
+	static func listExtendedAttributes(at path: String) -> String? {
+		let process = Process()
+		let pipe = Pipe()
+		process.executableURL = URL(fileURLWithPath: "/usr/bin/xattr")
+		process.arguments = ["-l", path]
+		process.standardOutput = pipe
+		process.standardError = FileHandle.nullDevice
+
+		do {
+			try process.run()
+			process.waitUntilExit()
+			guard process.terminationStatus == 0 else { return nil }
+			return String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)
+		} catch {
+			return nil
+		}
 	}
 }
 

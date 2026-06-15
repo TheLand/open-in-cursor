@@ -107,4 +107,41 @@ final class LauncherCoreTests: XCTestCase {
 		XCTAssertFalse(LauncherUI.automationSettingsURLs.isEmpty)
 		XCTAssertTrue(LauncherUI.automationSettingsURLs.allSatisfy { $0.hasPrefix("x-apple.systempreferences:") })
 	}
+
+	func testPrivacySecuritySettingsURLsAreConfigured() {
+		XCTAssertFalse(LauncherCore.privacySecuritySettingsURLs.isEmpty)
+		XCTAssertTrue(
+			LauncherCore.privacySecuritySettingsURLs.allSatisfy { $0.hasPrefix("x-apple.systempreferences:") }
+		)
+	}
+
+	func testHasQuarantineAttributeDetectsQuarantine() {
+		XCTAssertTrue(
+			LauncherCore.hasQuarantineAttribute(
+				at: "/Applications/Open in Cursor.app",
+				xattrLister: { _ in "com.apple.quarantine: 0083;..." }
+			)
+		)
+	}
+
+	func testHasQuarantineAttributeReturnsFalseWithoutQuarantine() {
+		XCTAssertFalse(
+			LauncherCore.hasQuarantineAttribute(
+				at: "/Applications/Open in Cursor.app",
+				xattrLister: { _ in "com.apple.provenance:" }
+			)
+		)
+	}
+
+	func testShouldShowGatekeeperGuideWhenQuarantined() {
+		XCTAssertTrue(
+			LauncherUI.shouldShowGatekeeperGuide(bundlePath: "/tmp/Open in Cursor.app") { _ in true }
+		)
+	}
+
+	func testShouldShowGatekeeperGuideWhenClean() {
+		XCTAssertFalse(
+			LauncherUI.shouldShowGatekeeperGuide(bundlePath: "/tmp/Open in Cursor.app") { _ in false }
+		)
+	}
 }

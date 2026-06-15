@@ -54,6 +54,8 @@ Update the changelog when any pushed change is **user-facing**:
 
 Do **not** add entries for internal-only work (CI tweaks, refactors, dev tooling) unless they affect users or releases.
 
+**Distribution note:** releases are unsigned/unnotarized. User-facing docs and in-app copy must keep the Gatekeeper / first-launch flow accurate. See [docs/development.md](../../../docs/development.md#distribution-limitations).
+
 ### Step 3: Update CHANGELOG.md
 
 Follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) — match the existing file style.

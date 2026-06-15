@@ -60,6 +60,7 @@ graph TB
 - **New Cursor window**: uses `-n` instead of reusing an existing window
 - **Universal binary**: native on Apple Silicon and Intel
 - **Permission guide**: in-app dialog with **Request Permission** and **Open Settings**
+- **First-launch guide**: in-app **Open Privacy & Security** when Gatekeeper quarantine is detected
 - **Team distribution**: `.dmg` published on GitHub Releases
 - **CI/CD**: GitHub Actions tests on every push; **automatic release on every tag push**
 
@@ -77,6 +78,30 @@ Requirements: [macOS 13+](https://www.apple.com/macos/) · [Cursor](https://curs
 
 1. Open the downloaded `.dmg`
 2. Drag **Open in Cursor** to **Applications**
+
+### First launch (macOS security)
+
+Open in Cursor is distributed as an open-source `.dmg` and is **not notarized** by Apple. On first launch, macOS may show:
+
+> *Apple cannot verify that Open in Cursor is free of malware…*
+
+This is **Gatekeeper**, not a sign of malware. Until the app is signed and notarized (see [Development](docs/development.md#distribution-limitations)), every user must approve it once.
+
+**If macOS blocks the app before it opens**, the in-app help is not available yet. Use one of these methods first:
+
+| Method | Steps |
+| --- | --- |
+| **Right-click Open** (recommended) | Applications → right-click **Open in Cursor** → **Open** → confirm **Open** |
+| **Privacy & Security** | After a blocked launch, open **System Settings → Privacy & Security → Security** → **Open Anyway** |
+| **Terminal** | `xattr -cr "/Applications/Open in Cursor.app"` |
+
+Open **Privacy & Security** from Terminal:
+
+```bash
+open "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension"
+```
+
+After the first successful launch, the app may show an in-app guide with **Open Privacy & Security** when the download quarantine flag is still present.
 
 ### Finder permission
 
@@ -106,7 +131,8 @@ No extra setup is required if Cursor is installed in **Applications**. The optio
 | Open in Cursor missing in Automation | Click **Request Permission** first, then reopen Settings |
 | Stale permissions (`env`, `bash`) | Disable those entries in Automation, or run `tccutil reset AppleEvents com.openincursor.app` and relaunch |
 | App not in Spotlight | Wait ~1 minute after install, or restart Finder |
-| macOS blocks the app | Right-click → Open, or `xattr -cr "/Applications/Open in Cursor.app"` |
+| macOS blocks the app (Gatekeeper) | Right-click → **Open** first; then **Privacy & Security → Security → Open Anyway**, or `xattr -cr "/Applications/Open in Cursor.app"` |
+| In-app **Open Privacy & Security** missing | macOS blocked launch before the app started — use the table above first |
 
 ## Documentation
 

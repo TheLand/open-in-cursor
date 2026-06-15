@@ -7,6 +7,12 @@ enum PermissionAlertAction: Equatable {
 	case cancel
 }
 
+enum GatekeeperAlertAction: Equatable {
+	case openPrivacySecurity
+	case continueLaunch
+	case cancel
+}
+
 enum LauncherUI {
 	static let automationSettingsURLs = [
 		"x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_Automation",
@@ -36,9 +42,9 @@ enum LauncherUI {
 		NSApplication.shared.activate(ignoringOtherApps: true)
 	}
 
-	static func openAutomationSettings(
-		workspace: NSWorkspace = .shared,
-		urls: [String] = automationSettingsURLs
+	static func openSystemSettings(
+		urls: [String],
+		workspace: NSWorkspace = .shared
 	) -> Bool {
 		for urlString in urls {
 			guard let url = URL(string: urlString) else { continue }
@@ -47,6 +53,69 @@ enum LauncherUI {
 			}
 		}
 		return false
+	}
+
+	static func openAutomationSettings(
+		workspace: NSWorkspace = .shared,
+		urls: [String] = automationSettingsURLs
+	) -> Bool {
+		openSystemSettings(urls: urls, workspace: workspace)
+	}
+
+	static func openPrivacySecuritySettings(
+		workspace: NSWorkspace = .shared,
+		urls: [String] = LauncherCore.privacySecuritySettingsURLs
+	) -> Bool {
+		openSystemSettings(urls: urls, workspace: workspace)
+	}
+
+	static func shouldShowGatekeeperGuide(
+		bundlePath: String = Bundle.main.bundlePath,
+		hasQuarantine: (String) -> Bool = { LauncherCore.hasQuarantineAttribute(at: $0) }
+	) -> Bool {
+		hasQuarantine(bundlePath)
+	}
+
+	@MainActor
+	static func showGatekeeperGuideAlert() -> GatekeeperAlertAction {
+		prepareForPermissionRequest()
+
+		let alert = NSAlert()
+		alert.messageText = LauncherCore.gatekeeperGuideTitle
+		alert.informativeText = LauncherCore.gatekeeperGuideMessage
+		alert.alertStyle = .warning
+		alert.addButton(withTitle: "Open Privacy & Security")
+		alert.addButton(withTitle: "Continue")
+		alert.addButton(withTitle: "Cancel")
+
+		switch alert.runModal() {
+		case .alertFirstButtonReturn:
+			return .openPrivacySecurity
+		case .alertSecondButtonReturn:
+			return .continueLaunch
+		default:
+			return .cancel
+		}
+	}
+
+	@MainActor
+	static func handleGatekeeperGuideIfNeeded() -> Bool {
+		guard shouldShowGatekeeperGuide() else { return true }
+
+		while true {
+			switch showGatekeeperGuideAlert() {
+			case .openPrivacySecurity:
+				if !openPrivacySecuritySettings() {
+					showError(
+						"Unable to open System Settings. Open Privacy & Security → Security manually."
+					)
+				}
+			case .continueLaunch:
+				return true
+			case .cancel:
+				return false
+			}
+		}
 	}
 
 	@MainActor
@@ -152,6 +221,8 @@ func handleFinderPermissionDenied() {
 
 @MainActor
 func runLauncher() {
+	guard LauncherUI.handleGatekeeperGuideIfNeeded() else { return }
+
 	do {
 		let folderPath = try getFinderFolderPath()
 		openFolderInCursor(from: folderPath)

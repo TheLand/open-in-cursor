@@ -87,6 +87,23 @@ Release assets:
 | Git hooks + manual upload | Developer Mac | `.dmg` in `dist/` uploaded by hand |
 | Local install | `./install.sh` | App in `/Applications` (dev only) |
 
+## Distribution limitations
+
+GitHub Releases ship an **unsigned, unnotarized** `.dmg`. macOS Gatekeeper will warn on first launch until the user approves the app.
+
+**What we can do in-app**
+
+- After a successful launch, if the app still has the download quarantine flag, show a first-launch guide with **Open Privacy & Security**.
+- Open Automation settings for Finder permission (existing flow).
+
+**What we cannot do in-app**
+
+- If Gatekeeper blocks launch entirely (“cannot verify malware”), the app never runs and cannot show buttons or deep links. Document **Right-click → Open** in the README and tell users to try again.
+
+**Future fix**
+
+- Apple Developer ID signing + `notarytool` notarization in [`.github/workflows/release.yml`](../.github/workflows/release.yml). Until then, keep the first-launch docs and in-app guide up to date.
+
 ## Contributing
 
 - Open a pull request on GitHub
